@@ -1,38 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import Camera from 'simple-vue-camera';
+import { ref } from "vue";
+import Camera from "simple-vue-camera";
 
-const action = ref('stop');
+const action = ref("stop");
 const cam = ref<any>(null);
 
-const toggleAction = (currentAction: 'play' | 'stop') => {
-  if (currentAction === 'play') {
-    action.value = 'stop';
+const toggleAction = (currentAction: "play" | "stop") => {
+  if (currentAction === "play") {
+    action.value = "stop";
   } else {
-    action.value = 'play';
+    action.value = "play";
   }
-};
-
-const onStarted = (stream: any) => {
-  console.log('On Started Event', stream);
-};
-const onStopped = (stream: any) => {
-  console.log('On Stopped Event', stream);
-};
-const onStop = () => {
-  cam.value.stop();
-};
-const onStart = () => {
-  cam.value.start();
-};
-const onError = (error: any) => {
-  console.log('On Error Event', error);
 };
 </script>
 
 <template>
-  <div class="">
-    <div class="text-h6 row items-center">
+  <div class="web-cam-container">
+    <div class="text-h6 row items-center q-ma-sm">
       <span class="text-caption">Live Streaming</span>
       <q-spinner-puff v-if="action === 'play'" size="md" color="green" />
 
@@ -44,8 +28,21 @@ const onError = (error: any) => {
         :icon="action === 'play' ? 'stop_circle' : 'play_circle'"
       />
     </div>
-    <div class="web-cam-container" v-if="action === 'play'">
-      <Camera :resolution="{ width: 375, height: 212 }" ref="cam"></Camera>
+    <q-separator inset />
+    <div v-if="action === 'play'">
+      <Camera ref="cam"></Camera>
+    </div>
+    <div v-else class="row items-center justify-center q-my-xl q-py-xl">
+      Please click on play button to start streaming...
     </div>
   </div>
 </template>
+<style scoped>
+.web-cam-container {
+  border: 1px solid grey;
+  border-radius: 5px;
+  min-height: 300px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>

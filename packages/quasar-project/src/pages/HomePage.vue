@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import LiveStreaming from '../components/LiveStreaming.vue';
+import { ref } from "vue";
+import LiveStreaming from "../components/LiveStreaming.vue";
+import ImageFrames from "src/components/ImageFrames.vue";
+import VideoPlayer from "src/components/VideoPlayer.vue";
 
-const tab = ref('stream');
+const tab = ref("stream");
 </script>
 
 <template>
@@ -18,15 +20,15 @@ const tab = ref('stream');
         <q-tab label="Image Frames" name="images" />
         <q-tab label="Videos" name="videos" />
       </q-tabs>
-      <q-tab-panels v-model="tab" animated class="shadow-2 rounded-borders">
+      <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="stream">
           <LiveStreaming />
         </q-tab-panel>
         <q-tab-panel name="images">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <ImageFrames />
         </q-tab-panel>
         <q-tab-panel name="videos">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <VideoPlayer />
         </q-tab-panel>
       </q-tab-panels>
     </div>
