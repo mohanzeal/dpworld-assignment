@@ -16,8 +16,8 @@
   },
   "scripts": {
     "dev": "concurrently -n 'backend,frontend' -c 'yellow,green' 'yarn backend dev' 'yarn frontend dev'",
-    "frontend": "yarn workspace @test/frontend",
-    "backend": "yarn workspace @test/backend"
+    "frontend": "yarn workspace @dpworld/frontend",
+    "backend": "yarn workspace @dpworld/backend"
   },
   "dependencies": {
     "@yarnpkg/pnpify": "^3.1.1-rc.6"

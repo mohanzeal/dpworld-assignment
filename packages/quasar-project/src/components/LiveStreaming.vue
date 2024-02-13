@@ -44,7 +44,7 @@ const onError = (error: any) => {
         :icon="action === 'play' ? 'stop_circle' : 'play_circle'"
       />
     </div>
-    <div class="web-cam-container">
+    <div class="web-cam-container" v-if="action === 'play'">
       <Camera :resolution="{ width: 375, height: 212 }" ref="cam"></Camera>
     </div>
   </div>
