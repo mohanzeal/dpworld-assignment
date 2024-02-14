@@ -3,6 +3,7 @@ import { ref } from "vue";
 import LiveStreaming from "../components/LiveStreaming.vue";
 import ImageFrames from "src/components/ImageFrames.vue";
 import VideoPlayer from "src/components/VideoPlayer.vue";
+import WebCamRecording from "src/components/WebCamRecording.vue";
 
 const tab = ref("stream");
 </script>
@@ -22,7 +23,7 @@ const tab = ref("stream");
       </q-tabs>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="stream">
-          <LiveStreaming />
+          <WebCamRecording />
         </q-tab-panel>
         <q-tab-panel name="images">
           <ImageFrames />
@@ -34,3 +35,13 @@ const tab = ref("stream");
     </div>
   </q-page>
 </template>
+
+<style scoped>
+.web-cam-container {
+  border: 1px solid grey;
+  border-radius: 5px;
+  min-height: 300px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>
