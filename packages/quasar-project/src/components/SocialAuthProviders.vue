@@ -1,25 +1,25 @@
 <script setup lang="ts">
 enum AuthProvider {
-  SELF = 'self',
-  GOOGLE = 'google',
-  LINKEDIN = 'linkedin',
+  SELF = "self",
+  GOOGLE = "google",
+  LINKEDIN = "linkedin",
 }
 
 const authProviders = [
   {
-    label: 'Google',
+    label: "Google",
     value: AuthProvider.GOOGLE,
     uri: `http://localhost:4000/api/v1/auth/oauth/google`,
     icon: `img:/google.svg`,
   },
   {
-    label: 'Facebook',
+    label: "Facebook",
     value: AuthProvider.GOOGLE,
     uri: `http://localhost:4000/api/v1/auth/oauth/google`,
     icon: `img:/facebook.svg`,
   },
   {
-    label: 'LinkedIn',
+    label: "LinkedIn",
     value: AuthProvider.LINKEDIN,
     uri: `http://localhost:4000/api/v1/auth/oauth/linkedin`,
     icon: `img:/linkedin.svg`,
@@ -44,8 +44,7 @@ const redirectToProvider = (provider: any) => {
           no-caps
           align="around"
           :icon="provider.icon"
-          rounded
-          class="inset-shadow"
+          class="q-pa-sm"
           :label="provider.label"
           @click="redirectToProvider(provider)"
         ></q-btn>

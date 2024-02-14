@@ -3,6 +3,26 @@ import { ref } from "vue";
 
 const slide = ref(1);
 const autoplay = ref(false);
+const fullscreen = ref(false);
+
+const imagesList = [
+  {
+    id: 1,
+    src: "https://cdn.quasar.dev/img/mountains.jpg",
+  },
+  {
+    id: 2,
+    src: "https://cdn.quasar.dev/img/parallax1.jpg",
+  },
+];
+
+const shareWhatsApp = (url: string) => {
+  const message = "Check out this image: " + url;
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+    message
+  )}`;
+  window.open(whatsappUrl);
+};
 </script>
 
 <template>
@@ -18,23 +38,47 @@ const autoplay = ref(false);
       transition-next="slide-left"
       @mouseenter="autoplay = false"
       @mouseleave="autoplay = true"
+      v-model:fullscreen="fullscreen"
     >
       <q-carousel-slide
-        :name="1"
-        img-src="https://cdn.quasar.dev/img/mountains.jpg"
-      />
-      <q-carousel-slide
-        :name="2"
-        img-src="https://cdn.quasar.dev/img/parallax1.jpg"
-      />
-      <q-carousel-slide
-        :name="3"
-        img-src="https://cdn.quasar.dev/img/parallax2.jpg"
-      />
-      <q-carousel-slide
-        :name="4"
-        img-src="https://cdn.quasar.dev/img/quasar.jpg"
-      />
+        :name="image.id"
+        class="q-pa-none"
+        v-for="image in imagesList"
+      >
+        <div
+          class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
+        >
+          <q-img class="rounded-borders col-12 full-height" :src="image.src" />
+          <q-carousel-control position="top-right" :offset="[18, 18]">
+            <q-btn
+              no-caps
+              dense
+              label="Share"
+              color="white"
+              icon-right="img:/whatsapp.svg"
+              text-color="primary"
+              @click="shareWhatsApp(image.src)"
+            />
+          </q-carousel-control>
+        </div>
+      </q-carousel-slide>
+
+      <template v-slot:control>
+        <q-carousel-control position="bottom-right" :offset="[18, 18]">
+          <q-btn
+            push
+            round
+            dense
+            color="white"
+            text-color="primary"
+            :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="fullscreen = !fullscreen"
+          />
+        </q-carousel-control>
+      </template>
     </q-carousel>
+    <div class="text-center q-ma-md">
+      <q-btn color="primary" to="/images-list" label="Show All Images" />
+    </div>
   </div>
 </template>

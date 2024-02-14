@@ -1,5 +1,9 @@
-<template>
-  <q-page class="row items-center justify-evenly"> Login page </q-page>
-</template>
+<script setup lang="ts">
+import SocialAuthProviders from "src/components/SocialAuthProviders.vue";
+</script>
 
-<script setup lang="ts"></script>
+<template>
+  <q-page class="row items-center justify-evenly">
+    <SocialAuthProviders />
+  </q-page>
+</template>
