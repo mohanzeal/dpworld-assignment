@@ -158,6 +158,7 @@ export const generateJWTPayload = (user: IUser) => {
   return {
     user: {
       [UserFields._ID]: user[UserFields._ID],
+      [UserFields.NAME]: user[UserFields.NAME],
     },
   }
 }
@@ -184,7 +185,7 @@ export const handleGoogleOAuthRedirect = (req: Request, res: Response) => {
     expiresIn: env.jwtExp,
   })
 
-  return res.redirect(env.appDomain + `/talent/#/login?cb=${token}`)
+  return res.redirect(env.appDomain + `/#/login?cb=${token}`)
 }
 
 export const initiateLinkedinOAuth = (
@@ -208,5 +209,5 @@ export const handleLinkedinOAuthRedirect = (req: Request, res: Response) => {
     expiresIn: env.jwtExp,
   })
 
-  return res.redirect(env.appDomain + `/talent/#/login?cb=${token}`)
+  return res.redirect(env.appDomain + `/#/login?cb=${token}`)
 }

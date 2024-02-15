@@ -22,7 +22,7 @@ router.get(
   '/oauth/google/callback',
   passport.authenticate(AuthProvider.GOOGLE, {
     session: false,
-    failureRedirect: `${env.appDomain}/talent/#/login?google=false`,
+    failureRedirect: `${env.appDomain}/#/login?google=false`,
   }),
   authController.handleGoogleOAuthRedirect
 )
@@ -33,7 +33,7 @@ router.get(
   '/oauth/linkedin/callback',
   passport.authenticate(AuthProvider.LINKEDIN, {
     session: false,
-    failureRedirect: `${env.appDomain}/talent/#/login?linkedin=false`,
+    failureRedirect: `${env.appDomain}/#/login?linkedin=false`,
   }),
   authController.handleLinkedinOAuthRedirect
 )

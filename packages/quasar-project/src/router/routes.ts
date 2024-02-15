@@ -4,14 +4,27 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/HomePage.vue") }],
+    children: [
+      {
+        name: "HomePage",
+        path: "",
+        component: () => import("pages/HomePage.vue"),
+      },
+    ],
   },
   {
     path: "/login",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/LoginPage.vue") }],
+    children: [
+      {
+        name: "LoginPage",
+        path: "",
+        component: () => import("pages/LoginPage.vue"),
+      },
+    ],
   },
   {
+    name: "ImagesList",
     path: "/images-list",
     component: () => import("layouts/MainLayout.vue"),
     children: [
