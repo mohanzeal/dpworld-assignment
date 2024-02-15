@@ -8,8 +8,8 @@ const $router = useRouter();
 const authStore = useAuthStore();
 
 const userName = computed(() => {
-  if (authStore.user && authStore.user.user) {
-    return authStore.user.user.name;
+  if (authStore.user) {
+    return authStore.user.name;
   }
 
   return "User";
@@ -33,12 +33,12 @@ const logout = () => {
           <q-btn round flat icon="face" />
           <q-btn flat icon="logout" label="Exit" @click="logout" />
         </template>
-        <template v-else> Welcom Guest </template>
+        <template v-else> Welcome Guest </template>
       </q-toolbar>
     </q-header>
 
     <q-page-container>
-      <router-view />
+      <router-view :key="($router.currentRoute.value.name as string)" />
     </q-page-container>
   </q-layout>
 </template>

@@ -1,9 +1,13 @@
 import { RouteRecordRaw } from "vue-router";
+import requireAuth from "./middleware/requireAuth";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    meta: {
+      middleware: [requireAuth],
+    },
     children: [
       {
         name: "HomePage",
@@ -24,11 +28,17 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    name: "ImagesList",
     path: "/images-list",
+    meta: {
+      middleware: [requireAuth],
+    },
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("components/ImagesList.vue") },
+      {
+        name: "ImagesList",
+        path: "",
+        component: () => import("components/ImagesList.vue"),
+      },
     ],
   },
 

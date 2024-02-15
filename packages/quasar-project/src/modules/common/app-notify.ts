@@ -1,45 +1,42 @@
-import { CatchError } from '@placements/common';
-import { ICONS } from '@placements/core/ui';
-import { Notify, QNotifyCreateOptions } from 'quasar';
-import { i18n } from '../../boot/i18n';
-const { t: $t } = i18n.global;
+import { Notify, QNotifyCreateOptions } from "quasar";
+import { CatchError } from "../auth/types";
 
-const NOTIFY_DEFAULT_POSITION = 'bottom';
+const NOTIFY_DEFAULT_POSITION = "bottom";
 const successObj: QNotifyCreateOptions = {
-  color: 'positive',
+  color: "positive",
   position: NOTIFY_DEFAULT_POSITION,
-  message: '',
-  icon: ICONS.CHECK,
+  message: "",
+  icon: "check",
 };
 
 const negativeObj: QNotifyCreateOptions = {
-  color: 'negative',
+  color: "negative",
   position: NOTIFY_DEFAULT_POSITION,
-  message: '',
-  icon: ICONS.ATTENTION,
+  message: "",
+  icon: "warning",
 };
 const infoObj: QNotifyCreateOptions = {
-  color: 'info',
+  color: "info",
   position: NOTIFY_DEFAULT_POSITION,
-  message: '',
-  icon: ICONS.INFO,
+  message: "",
+  icon: "info",
 };
 
 const notify = Notify;
 
 export const toast = (
   message: string,
-  type: 'positive' | 'negative' | 'info' = 'positive'
+  type: "positive" | "negative" | "info" = "positive"
 ) => {
   let messageType = infoObj;
   switch (type) {
-    case 'positive':
+    case "positive":
       messageType = { ...successObj, message };
       break;
-    case 'negative':
+    case "negative":
       messageType = { ...negativeObj, message };
       break;
-    case 'info':
+    case "info":
       messageType = { ...infoObj, message };
       break;
 
@@ -52,7 +49,7 @@ export const toast = (
 
 export const showApiError = (error: CatchError) => {
   if (!error.response) {
-    toast($t('common.networkErr'), 'negative');
+    toast("Network error", "negative");
   }
 
   return error?.response?.data;

@@ -16,7 +16,7 @@ declare module "@vue/runtime-core" {
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-const apiDomain = process.env.VUE_API_DOMAIN;
+const apiDomain = process.env.VUE_API_DOMAIN || "http://localhost:4000";
 export const api = axios.create({
   baseURL: `${apiDomain}/api/v1`,
 });
