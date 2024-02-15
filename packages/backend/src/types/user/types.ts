@@ -1,18 +1,14 @@
 import { Types } from 'mongoose'
-import { DisplayMode, UserRole, UserStatus } from './constants.js'
+import { AuthProvider } from './constants.js'
 
 export type IUser = {
   _id: string | Types.ObjectId
   name: string
   featuredImage: string
+  authProvider: AuthProvider
   desc: string
   email: string
   password?: string
-  currency: string
-  locale: string
-  displayMode: DisplayMode
-  status: UserStatus
-  role: UserRole
   isDeleted: boolean
   createdAt: Date | number
   updatedAt: Date | number

@@ -15,8 +15,8 @@
     "typescript": "^4.5.2"
   },
   "scripts": {
-    "dev": "concurrently -n 'backend,frontend' -c 'yellow,green' 'yarn backend dev' 'yarn frontend dev'",
-    "frontend": "yarn workspace @dpworld/frontend",
+    "dev": "concurrently -n 'backend,quasar-project' -c 'yellow,green' 'yarn backend dev' 'yarn quasar-project dev'",
+    "quasar-project": "yarn workspace @dpworld/quasar-project",
     "backend": "yarn workspace @dpworld/backend"
   },
   "dependencies": {

@@ -6,7 +6,7 @@ import { authModule } from './modules/auth/index.js'
 
 // initialize mongoose database connection
 import './config/mongoose.js'
-import './config/passport.js'
+import './config/oauth/passport.js'
 import env from './config/env.js'
 
 const app: Application = express()

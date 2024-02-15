@@ -1,19 +1,20 @@
 import {
+  AuthProvider,
   CatchError,
   IUser,
   JwtPayload,
   ModelType,
-  UserStatus,
+  UserFields,
 } from '../../types/index.js'
 import bcrypt from 'bcrypt'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { Types } from 'mongoose'
 import env from '../../config/env.js'
-import { daysAgoFromToday } from '../../utils/helpers.js'
 import { utils } from '../../utils/index.js'
 import { authModule } from '../auth/index.js'
 import { userModule } from './../user/index.js'
+import passport from 'passport'
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
@@ -38,14 +39,6 @@ export const login = async (req: Request, res: Response) => {
 
     if (user) {
       // check if user is active and has not been deactivated in the last 2 days
-      const createdDaysAgo = daysAgoFromToday(new Date(user.createdAt))
-
-      if (user.status === UserStatus.INACTIVE && createdDaysAgo > 2) {
-        return utils.ApiError.handle(
-          new utils.AuthFailureError(res.__('api.auth.login.userNotFound')),
-          res
-        )
-      }
 
       const isValidPassword: boolean = bcrypt.compareSync(
         password,
@@ -63,9 +56,6 @@ export const login = async (req: Request, res: Response) => {
       const jwtPayload: { user: Partial<JwtPayload> } = {
         user: {
           _id: user._id,
-          role: user.role,
-          status: user.status,
-          locale: user.locale,
         },
       }
 
@@ -162,4 +152,61 @@ export const me = async (req: Request, res: Response) => {
       res
     )
   }
+}
+
+export const generateJWTPayload = (user: IUser) => {
+  return {
+    user: {
+      [UserFields._ID]: user[UserFields._ID],
+    },
+  }
+}
+
+export const initiateGoogleOAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  return passport.authenticate('google', {
+    scope: ['email', 'profile'],
+    accessType: 'offline',
+    prompt: 'consent',
+  })(req, res, next)
+}
+
+export const handleGoogleOAuthRedirect = (req: Request, res: Response) => {
+  //sign a jwt token and login to frontend
+  const jwtPayload: { user: Partial<JwtPayload> } = generateJWTPayload(
+    req.user as IUser
+  )
+
+  const token: string = jwt.sign(jwtPayload, env.jwtSecret, {
+    expiresIn: env.jwtExp,
+  })
+
+  return res.redirect(env.appDomain + `/talent/#/login?cb=${token}`)
+}
+
+export const initiateLinkedinOAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  return passport.authenticate(AuthProvider.LINKEDIN, {
+    scope: ['openid', 'profile', 'email'],
+    session: false,
+  })(req, res, next)
+}
+
+export const handleLinkedinOAuthRedirect = (req: Request, res: Response) => {
+  //sign a jwt token and login to frontend
+  const jwtPayload: { user: Partial<JwtPayload> } = generateJWTPayload(
+    req.user as IUser
+  )
+
+  const token: string = jwt.sign(jwtPayload, env.jwtSecret, {
+    expiresIn: env.jwtExp,
+  })
+
+  return res.redirect(env.appDomain + `/talent/#/login?cb=${token}`)
 }

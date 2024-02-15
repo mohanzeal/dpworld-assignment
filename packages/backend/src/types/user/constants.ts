@@ -16,6 +16,7 @@ export enum UserFields {
   NAME = 'name',
   USERNAME = 'username',
   FEATURED_IMAGE = 'featuredImage',
+  AUTH_PROVIDER = 'authProvider',
   PASSWORD = 'password',
   EMAIL = 'email',
   STATUS = 'status',
@@ -36,12 +37,7 @@ export const USER_DISPLAY_COLUMNS: Partial<keyof IUser>[] = [
   UserFields.NAME,
   UserFields.FEATURED_IMAGE,
   UserFields.EMAIL,
-  UserFields.STATUS,
-  UserFields.CURRENCY,
-  UserFields.LOCALE,
-  UserFields.DISPLAY_MODE,
   UserFields.IS_DELETED,
-  UserFields.ROLE,
   UserFields.DESC,
   UserFields.CREATED_AT,
   UserFields.UPDATED_AT,
@@ -63,3 +59,9 @@ export const displayModesList = [
   { value: DisplayMode.DARK, label: 'Dark' },
   { value: DisplayMode.LIGHT, label: 'Light' },
 ]
+
+export enum AuthProvider {
+  SELF = 'self',
+  GOOGLE = 'google',
+  LINKEDIN = 'linkedin',
+}

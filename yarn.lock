@@ -726,7 +726,9 @@ __metadata:
     "@types/lodash": ^4.14.180
     "@types/nodemailer": ^6.4.7
     "@types/passport": ^1.0.7
+    "@types/passport-google-oauth20": ^2.0.14
     "@types/passport-jwt": ^3.0.6
+    "@types/passport-linkedin-oauth2": ^1.5.6
     "@types/swagger-jsdoc": ^6.0.1
     "@types/swagger-ui-express": ^4.1.3
     "@typescript-eslint/eslint-plugin": ^4.27.0
@@ -746,7 +748,9 @@ __metadata:
     mongoose: ^6.8.1
     nodemailer: ^6.9.1
     passport: ^0.5.2
+    passport-google-oauth20: ^2.0.0
     passport-jwt: ^4.0.0
+    passport-linkedin-oauth2: ^2.0.0
     prettier: ^2.3.1
     swagger-jsdoc: ^6.1.0
     swagger-ui-express: ^4.2.0
@@ -2282,10 +2286,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/oauth@npm:*":
+  version: 0.9.4
+  resolution: "@types/oauth@npm:0.9.4"
+  dependencies:
+    "@types/node": "*"
+  checksum: eb82393214ddc4e5bff2177cecb80237a7e2562ee94872234dcf822118a6b8bff11efa37e26f98a836b675bc211689272cdecb7d9221a9990dbc5a4b363fc033
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.2
   resolution: "@types/parse-json@npm:4.0.2"
   checksum: 5bf62eec37c332ad10059252fc0dab7e7da730764869c980b0714777ad3d065e490627be9f40fc52f238ffa3ac4199b19de4127196910576c2fe34dd47c7a470
+  languageName: node
+  linkType: hard
+
+"@types/passport-google-oauth20@npm:^2.0.14":
+  version: 2.0.14
+  resolution: "@types/passport-google-oauth20@npm:2.0.14"
+  dependencies:
+    "@types/express": "*"
+    "@types/passport": "*"
+    "@types/passport-oauth2": "*"
+  checksum: 1f013dec6e6b168e7971ae1f7815b5eb015830d2da5bdb0d2fc5e3dbdf9ef7e39e2d1c62495a50d763abda9b59f7c1e35f83945ddfc309ba74cb46695da4a792
   languageName: node
   linkType: hard
 
@@ -2297,6 +2321,27 @@ __metadata:
     "@types/jsonwebtoken": "*"
     "@types/passport-strategy": "*"
   checksum: 89e206659f38fd520c0d72561606ef1860dc23e59d401bcb429052001ef069a713b1a745ec1208273454e52336a175fb6692dcd3422ecebb552a21cf4b03dc56
+  languageName: node
+  linkType: hard
+
+"@types/passport-linkedin-oauth2@npm:^1.5.6":
+  version: 1.5.6
+  resolution: "@types/passport-linkedin-oauth2@npm:1.5.6"
+  dependencies:
+    "@types/express": "*"
+    "@types/passport": "*"
+  checksum: 41b7bc2f09edc408538f7e26c1732bfb52535a38649074692c73bb0e6c48e6a6595f55d993aece272351dcbfd72c95af0e945c8e87b759254ed739344189c91d
+  languageName: node
+  linkType: hard
+
+"@types/passport-oauth2@npm:*":
+  version: 1.4.15
+  resolution: "@types/passport-oauth2@npm:1.4.15"
+  dependencies:
+    "@types/express": "*"
+    "@types/oauth": "*"
+    "@types/passport": "*"
+  checksum: 352c4e2d09a86f8fc0dcf2c917c221f302a35a14e7467e2fa3a1653c0a9a1f842c910a4e52f799856536522e6359c20d1afc319579d9edf4b2ac7ea11b183b52
   languageName: node
   linkType: hard
 
@@ -3069,6 +3114,13 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
+  languageName: node
+  linkType: hard
+
+"base64url@npm:3.x.x":
+  version: 3.0.1
+  resolution: "base64url@npm:3.0.1"
+  checksum: a77b2a3a526b3343e25be424de3ae0aa937d78f6af7c813ef9020ef98001c0f4e2323afcd7d8b2d2978996bf8c42445c3e9f60c218c622593e5fdfd54a3d6e18
   languageName: node
   linkType: hard
 
@@ -6675,6 +6727,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"oauth@npm:0.10.x":
+  version: 0.10.0
+  resolution: "oauth@npm:0.10.0"
+  checksum: 68fbcd9fc382985fd6a4856245bb9f78281c08ea238e814288c51e6cfb65e442c9c4eea67d54ec595384eb3f007e7b64ae3b8e67ec309228df44aba64cc9e0c7
+  languageName: node
+  linkType: hard
+
 "object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
@@ -6853,6 +6912,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"passport-google-oauth20@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "passport-google-oauth20@npm:2.0.0"
+  dependencies:
+    passport-oauth2: 1.x.x
+  checksum: 1d34f4c2da059504b6a3c149b261b9063d0390c84d500fa314b3895d599d7f96ce9750e48a5b715df92fba57ef4ecb5e66d3ce99ded5cc9b17d201a06ba8701e
+  languageName: node
+  linkType: hard
+
 "passport-jwt@npm:^4.0.0":
   version: 4.0.1
   resolution: "passport-jwt@npm:4.0.1"
@@ -6860,6 +6928,28 @@ __metadata:
     jsonwebtoken: ^9.0.0
     passport-strategy: ^1.0.0
   checksum: 0669d5bf8fc18ee57eb39601491c59ac084acfa6c972e0a3289e9d88a3ee6fab9e9fb279f359eee81939fedb66904c4a74423004480b60c54621af0d7b2ee0d5
+  languageName: node
+  linkType: hard
+
+"passport-linkedin-oauth2@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "passport-linkedin-oauth2@npm:2.0.0"
+  dependencies:
+    passport-oauth2: 1.x.x
+  checksum: 7eb97442f3f087b8b207bf107e5c161e1d9d1cf583dc8a379f9e26012a07c4acb1e0cb46bd6b303967352672dee56b609398f18e7b1e7e71bfdeb0feb4cd8a0f
+  languageName: node
+  linkType: hard
+
+"passport-oauth2@npm:1.x.x":
+  version: 1.8.0
+  resolution: "passport-oauth2@npm:1.8.0"
+  dependencies:
+    base64url: 3.x.x
+    oauth: 0.10.x
+    passport-strategy: 1.x.x
+    uid2: 0.0.x
+    utils-merge: 1.x.x
+  checksum: a9a80b968343c9c1906f74ef613b346ec2d6a6acfe17af81e673fd774779b436729252485755c3ce182f2cdba2434d75067418952d722404d65b93c0360ca02b
   languageName: node
   linkType: hard
 
@@ -8330,6 +8420,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uid2@npm:0.0.x":
+  version: 0.0.4
+  resolution: "uid2@npm:0.0.4"
+  checksum: e92325ce2e3b7be504b19e835dbb5a8b0495031f364b08ca46745468ed0ae0f202a4fdaf99a1a2715844156efc3ab410456ae24a0f7c0ae4b0a2e9f2784edfd9
+  languageName: node
+  linkType: hard
+
 "undici-types@npm:~5.26.4":
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
@@ -8413,7 +8510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utils-merge@npm:1.0.1":
+"utils-merge@npm:1.0.1, utils-merge@npm:1.x.x":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: c81095493225ecfc28add49c106ca4f09cdf56bc66731aa8dabc2edbbccb1e1bfe2de6a115e5c6a380d3ea166d1636410b62ef216bb07b3feb1cfde1d95d5080

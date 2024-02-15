@@ -22,6 +22,7 @@ const isDev =
 export default {
   env: process.env.NODE_ENV,
   port: process.env.PORT || '4000',
+  appDomain: process.env.APP_DOMAIN || '/',
   apiBase: '/api/v1',
   isDev: isDev,
   logDirectory: process.env.LOG_DIR || 'logs',
@@ -47,4 +48,20 @@ export default {
   jwtExp: process.env.JWT_EXP || '4h',
   cacheDefaultTTL: process.env.CACHE_DEFAULT_TTL || '',
   cacheHeaderName: process.env.CACHE_HEADER_NAME || '',
+  oauth: {
+    google: {
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || 'not-set',
+      GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || 'not-set',
+      GOOGLE_REDIRECT_CALLBACK_URL:
+        process.env.GOOGLE_REDIRECT_CALLBACK_URL ||
+        'http://localhost:4000/api/v1/auth/oauth/google/callback',
+    },
+    linkedin: {
+      LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID || 'not-set',
+      LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET || 'not-set',
+      LINKEDIN_REDIRECT_CALLBACK_URL:
+        process.env.LINKEDIN_REDIRECT_CALLBACK_URL ||
+        'http://localhost:4000/api/v1/auth/oauth/linkedin/callback',
+    },
+  },
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 const video = ref<any>(null);
 const canvas = ref<any>(null);
