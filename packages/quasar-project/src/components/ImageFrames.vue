@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useAuthStore } from "src/modules/auth/auth.store";
+import { getUserImages } from "../modules/common/common.api";
 
-const slide = ref(1);
+const authStore = useAuthStore();
+const slide = ref("1");
 const autoplay = ref(false);
 const fullscreen = ref(false);
+const imagesList = ref<{ id: string; src: string }[]>([]);
 
-const imagesList = [
-  {
-    id: 1,
-    src: "https://cdn.quasar.dev/img/mountains.jpg",
-  },
-  {
-    id: 2,
-    src: "https://cdn.quasar.dev/img/parallax1.jpg",
-  },
-];
+onMounted(async () => {
+  const userId = authStore.user._id;
+  const response = await getUserImages(userId);
+  if (response.success) {
+    imagesList.value = response.images.map((image: any) => {
+      return {
+        id: image._id,
+        src: `http://localhost:4000${image.path}`,
+      };
+    });
+
+    slide.value = imagesList.value[0]["id"];
+  }
+});
 
 const shareWhatsApp = (url: string) => {
   const message = "Check out this image: " + url;
@@ -30,7 +38,6 @@ const shareWhatsApp = (url: string) => {
     <q-carousel
       animated
       v-model="slide"
-      navigation
       infinite
       :autoplay="autoplay"
       arrows

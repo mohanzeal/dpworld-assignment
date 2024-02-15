@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useAuthStore } from "src/modules/auth/auth.store";
 import { ref } from "vue";
+import { uploadImage, uploadVideo } from "../modules/common/common.api";
 
+const authStore = useAuthStore();
 const video = ref<any>(null);
 const canvas = ref<any>(null);
 const recording = ref(false);
@@ -35,16 +38,15 @@ const startRecording = async () => {
     };
 
     mediaRecorder.onstop = async () => {
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const formData = new FormData();
-      formData.append("video", blob);
-
       try {
-        console.log(formData);
-        // const response = await axios.post('/uploadVideo', formData, {
-        //   headers: { 'Content-Type': 'multipart/form-data' },
-        // });
-        // console.log("Video uploaded successfully", response.data);
+        const blob = new Blob(recordedChunks, { type: "video/webm" });
+        const response = await uploadVideo(
+          blob,
+          `${authStore.user._id}-${Date.now()}.webm`,
+          authStore.user.name,
+          authStore.user._id
+        );
+        console.log(response);
       } catch (error) {
         console.error("Error uploading video", error);
       }
@@ -59,7 +61,7 @@ const startRecording = async () => {
   }
 };
 
-const stopRecording = () => {
+const stopRecording = async () => {
   stopSnapshotInterval();
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
     mediaRecorder.stop();
@@ -67,7 +69,7 @@ const stopRecording = () => {
   }
 };
 
-const takeSnapshot = () => {
+const takeSnapshot = async () => {
   if (!canvas.value) return;
 
   const context = canvas.value.getContext("2d");
@@ -75,22 +77,14 @@ const takeSnapshot = () => {
 
   const dataURL = canvas.value.toDataURL("image/png");
   const blob = dataURItoBlob(dataURL);
-  currentImage.value = URL.createObjectURL(blob);
-  const formData = new FormData();
-  formData.append("snapshot", blob);
 
-  console.log(formData);
-
-  // axios
-  //   .post("/uploadSnapshot", formData, {
-  //     headers: { "Content-Type": "multipart/form-data" },
-  //   })
-  //   .then((response) => {
-  //     console.log("Snapshot uploaded successfully", response.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error uploading snapshot", error);
-  //   });
+  const response = await uploadImage(
+    blob,
+    `${authStore.user._id}-${Date.now()}.jpg`,
+    authStore.user.name,
+    authStore.user._id
+  );
+  console.log(response);
 };
 
 const startSnapshotInterval = () => {

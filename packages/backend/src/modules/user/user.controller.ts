@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 import lodash from 'lodash'
 import { utils } from '../../utils/index.js'
 import { userModule } from './index.js'
+import { videStreamsModule } from '../video-streams/index.js'
+import { imageFrameModule } from '../image-frames/index.js'
 
 export const updateUser = async (req: Request, res: Response) => {
   const userDetails: IUser = req.body
@@ -47,4 +49,41 @@ export const updateUser = async (req: Request, res: Response) => {
 
     return utils.ApiError.handle(new utils.BadRequestError(msg), res)
   }
+}
+
+export const getImagesByUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  if (userId) {
+    const userImages = await imageFrameModule.model.ImageFrames.find({
+      userId: userId,
+    }).sort({ createdAt: -1 })
+
+    return res.send({
+      success: true,
+      images: userImages,
+    })
+  }
+}
+
+export const getVideosByUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  if (userId) {
+    const userVideos = await videStreamsModule.model.VideoStreams.find({
+      userId: userId,
+    }).sort({ createdAt: -1 })
+
+    return res.send({
+      success: true,
+      images: userVideos,
+    })
+  }
+}
+
+export const getAllUserImages = async (req: Request, res: Response) => {
+  const userVideos = videStreamsModule.model.VideoStreams.find({})
+
+  return res.send({
+    success: true,
+    images: userVideos,
+  })
 }
