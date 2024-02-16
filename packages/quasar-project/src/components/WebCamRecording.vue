@@ -120,7 +120,7 @@ const dataURItoBlob = (dataURI: string) => {
       <q-btn
         no-caps
         @click="toggleAction(isPlay)"
-        :label="isPlay ? 'Stop' : 'Play'"
+        :label="isPlay ? 'Stop' : 'Start'"
         :icon="isPlay ? 'stop_circle' : 'play_circle'"
       />
     </div>
@@ -134,24 +134,14 @@ const dataURItoBlob = (dataURI: string) => {
       Please click on play button to start streaming...
     </div>
   </div>
-  <!-- <div>
-    <div>
-      <button @click="startRecording" :disabled="recording">
-        Start Recording
-      </button>
-      <button @click="stopRecording" :disabled="!recording">
-        Stop Recording
-      </button>
-    </div>
-    <div>
-      <button @click="startSnapshotInterval" :disabled="snapshotInterval">
-        Start Snapshot
-      </button>
-      <button @click="stopSnapshotInterval" :disabled="!snapshotInterval">
-        Stop Snapshot
-      </button>
-    </div>
-    <video ref="video" autoplay></video>
-    <canvas ref="canvas"></canvas>
-  </div> -->
 </template>
+
+<style scoped>
+.web-cam-container {
+  border: 1px solid grey;
+  border-radius: 5px;
+  min-height: 300px;
+  max-width: 600px !important;
+  margin: 0 auto;
+}
+</style>

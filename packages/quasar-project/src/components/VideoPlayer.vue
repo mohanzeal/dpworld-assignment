@@ -35,6 +35,7 @@ const options = { quality: { default: "720p" } };
   <div class="web-cam-container">
     <q-carousel
       animated
+      height="auto"
       infinite
       v-model="slide"
       arrows
@@ -47,9 +48,7 @@ const options = { quality: { default: "720p" } };
         class="q-pa-none"
         v-for="video in videosList"
       >
-        <div
-          class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap"
-        >
+        <div class="row fit justify-start items-center q-col-gutter no-wrap">
           <vue-plyr :options="options">
             <video
               controls
@@ -65,3 +64,12 @@ const options = { quality: { default: "720p" } };
     </q-carousel>
   </div>
 </template>
+<style scoped>
+.web-cam-container {
+  border: 1px solid grey;
+  border-radius: 5px;
+  min-height: 300px;
+  max-width: 500px !important;
+  margin: 0 auto;
+}
+</style>

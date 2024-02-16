@@ -58,6 +58,33 @@ export async function getUserImages(userId: string) {
   }
 }
 
+export async function getPaginatedUsers(payload: Record<string, unknown>) {
+  let queryParams = "?";
+  if (payload.documentType)
+    queryParams += `&documentType=${payload.documentType}`;
+
+  // send pagination fields
+  if (payload.page) queryParams += `&current=${payload.page}`;
+  if (payload.rowsPerPage) queryParams += `&pageSize=${payload.rowsPerPage}`;
+
+  // send search fields
+  if (payload.searchField) queryParams += `&searchField=${payload.searchField}`;
+  if (payload.searchVal) queryParams += `&searchVal=${payload.searchVal}`;
+
+  // send sort fields
+  if (payload.sortBy) queryParams += `&sortField=${payload.sortBy}`;
+
+  if (typeof payload.descending === "boolean")
+    queryParams += `&sortOrder=${payload.descending ? "desc" : "asc"}`;
+
+  try {
+    const response = await api.get(`/user/all${queryParams}`);
+    return response.data;
+  } catch (e) {
+    return showApiError(e as CatchError);
+  }
+}
+
 export async function getUserVideos(userId: string) {
   try {
     const response = await api.get(`/user/videos/${userId}`);

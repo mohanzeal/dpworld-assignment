@@ -35,13 +35,3 @@ const tab = ref("stream");
     </div>
   </q-page>
 </template>
-
-<style scoped>
-.web-cam-container {
-  border: 1px solid grey;
-  border-radius: 5px;
-  min-height: 300px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-</style>

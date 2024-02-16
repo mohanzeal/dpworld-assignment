@@ -3,6 +3,13 @@ import { onMounted, ref } from "vue";
 import { useAuthStore } from "src/modules/auth/auth.store";
 import { getUserImages } from "../modules/common/common.api";
 
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
+    default: null,
+  },
+});
 const authStore = useAuthStore();
 const slide = ref("1");
 const autoplay = ref(false);
@@ -11,8 +18,8 @@ const imagesList = ref<{ id: string; src: string }[]>([]);
 
 onMounted(async () => {
   const userId = authStore.user._id;
-  const response = await getUserImages(userId);
-  if (response.success) {
+  const response = await getUserImages(props.userId ? props.userId : userId);
+  if (response.success && response.images.length) {
     imagesList.value = response.images.map((image: any) => {
       return {
         id: image._id,
@@ -34,7 +41,7 @@ const shareWhatsApp = (url: string) => {
 </script>
 
 <template>
-  <div class="web-cam-container">
+  <div class="web-cam-container" v-if="imagesList.length">
     <q-carousel
       animated
       v-model="slide"
@@ -84,8 +91,23 @@ const shareWhatsApp = (url: string) => {
         </q-carousel-control>
       </template>
     </q-carousel>
-    <div class="text-center q-ma-md">
-      <q-btn color="primary" to="/images-list" label="Show All Images" />
+    <div class="text-center q-ma-md" v-if="!props.userId">
+      <q-btn
+        color="primary"
+        to="/images-list"
+        no-caps
+        label="Show All User Images"
+      />
     </div>
   </div>
+  <div v-else class="text-center bg-white">no images found.</div>
 </template>
+<style>
+.web-cam-container {
+  border: 1px solid grey;
+  border-radius: 5px;
+  min-height: 300px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>

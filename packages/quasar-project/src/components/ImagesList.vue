@@ -1,60 +1,114 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { useQuasar } from "quasar";
+import { ref, watch, onMounted } from "vue";
+import { getPaginatedUsers } from "../modules/common/common.api";
+import ImageFrames from "./ImageFrames.vue";
 
+const $q = useQuasar();
 const startDateFilter = ref("2019/02/01");
 const endDateFilter = ref("2019/02/01");
 const columns = [
   {
-    name: "id",
+    name: "_id",
     required: true,
     label: "ID",
     align: "left",
-    field: (row: { name: string }) => row.name,
+    field: "_id",
     format: (val: string) => `${val}`,
-    sortable: true,
   },
   {
     name: "name",
     align: "center",
     label: "PERSON NAME",
     field: "name",
-    sortable: true,
   },
   {
     name: "createdAt",
     label: "DATE & TIME",
     field: "createdAt",
-    sortable: true,
+    align: "center",
   },
   {
     name: "actions",
     align: "center",
     label: "Actions",
     field: "actions",
-    sortable: true,
   },
 ];
-
-const originalRows = [
-  {
-    id: "34567asdf",
-    name: "Prakash",
-    createdAt: "23/12/2024 4:00:00",
-  },
-  {
-    id: "34567sdfasdf",
-    name: "Mohan",
-    createdAt: "24/12/2024 4:00:00",
-  },
-  {
-    id: "34567sdfasdf",
-    name: "Sowjanya",
-    createdAt: "24/12/2024 4:00:00",
-  },
-];
+const rows = ref([]);
+const titleSearch = ref("");
+const tableRef = ref();
 const loading = ref(false);
-const filter = ref("");
-const rows = ref([...originalRows]);
+const defaultPaginationParams = {
+  sortBy: "createdAt",
+  descending: true,
+  page: 1,
+  rowsPerPage: getItemsPerPage() || 10,
+  rowsNumber: 0,
+};
+const pagination = ref(JSON.parse(JSON.stringify(defaultPaginationParams)));
+
+watch(
+  () => $q.screen.name,
+  () => {
+    pagination.value.rowsPerPage = getItemsPerPage();
+  }
+);
+
+function getItemsPerPage() {
+  if ($q.screen.lt.sm) {
+    return 4;
+  }
+
+  return 6;
+}
+
+async function onRequest(params: any) {
+  loading.value = true;
+
+  // fetch data from "server"
+  const { data: paginatedResponse } = await getPaginatedUsers({
+    // search name
+    searchVal: params.filter,
+    searchField: "name",
+    // pagination fields
+    ...params.pagination,
+    rowsPerPage: params.pagination.rowsPerPage || getItemsPerPage(),
+  });
+
+  // set total records
+  pagination.value.rowsNumber = paginatedResponse.total;
+  // clear out existing data and add new
+  rows.value = paginatedResponse.records;
+
+  // calculate starting row of data
+  // const startRow = (props.pagination?.page - 1) * props.pagination?.rowsPerPage;
+
+  pagination.value.page = paginatedResponse.current;
+  pagination.value.rowsPerPage = paginatedResponse.pageSize;
+  pagination.value.sortBy = paginatedResponse.sortField;
+  pagination.value.descending =
+    paginatedResponse.sortOrder == "-1" ? true : false;
+  // ...and turn of loading indicator
+  loading.value = false;
+}
+
+const loadResumesList = () => {
+  tableRef.value.requestServerInteraction();
+};
+
+onMounted(() => {
+  // get initial data from server (1st page)
+  loadResumesList();
+});
+
+const currentUserId = ref("");
+const showImageDialog = ref(false);
+
+const toggleImageDialog = (row: any) => {
+  showImageDialog.value = true;
+  currentUserId.value = row._id;
+};
 </script>
 
 <template>
@@ -62,15 +116,29 @@ const rows = ref([...originalRows]);
     <q-table
       flat
       bordered
-      title="Treats"
-      :rows="rows"
+      title="User Images List"
       :columns="(columns as any)"
       row-key="id"
-      :filter="filter"
       :loading="loading"
+      class="rounded-borders"
+      ref="tableRef"
+      :rows="rows"
+      v-model:pagination="pagination"
+      :filter="titleSearch"
+      binary-state-sort
+      @request="onRequest"
+      :rows-per-page-items="getItemsPerPage"
     >
       <template v-slot:top>
-        <div class="text-h6 text-bold">Image List</div>
+        <q-btn
+          to="/"
+          flat
+          icon="chevron_left"
+          class="q-ma-sm"
+          round
+          color="primary"
+        ></q-btn>
+        <div class="text-h6 text-bold">User Image List</div>
         <q-space />
         Filters:
         <div class="row items-center">
@@ -127,7 +195,9 @@ const rows = ref([...originalRows]);
             class="col-xs-4"
             debounce="300"
             color="primary"
-            v-model="filter"
+            v-model="titleSearch"
+            placeholder="Search name"
+            clearable
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -138,9 +208,9 @@ const rows = ref([...originalRows]);
 
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td :key="'id'" :props="props">
+          <q-td :key="'_id'" :props="props">
             <div>
-              {{ props.row["id"] }}
+              {{ props.row["_id"] }}
             </div>
           </q-td>
           <q-td :key="'name'" :props="props">
@@ -156,7 +226,13 @@ const rows = ref([...originalRows]);
 
           <q-td :key="'actions'" :props="props" class="text-center">
             <div class="row items-center justify-center q-gutter-xs">
-              <q-btn label="Show Image" size="xs" color="primary"> </q-btn>
+              <q-btn
+                label="Show Images"
+                size="xs"
+                color="primary"
+                @click="toggleImageDialog(props.row)"
+              >
+              </q-btn>
             </div>
           </q-td>
         </q-tr>
@@ -168,5 +244,14 @@ const rows = ref([...originalRows]);
         </div>
       </template>
     </q-table>
+
+    <q-dialog v-model="showImageDialog">
+      <div style="width: 700px; max-width: 80vw">
+        <ImageFrames
+          v-if="showImageDialog && currentUserId"
+          :user-id="currentUserId"
+        />
+      </div>
+    </q-dialog>
   </div>
 </template>

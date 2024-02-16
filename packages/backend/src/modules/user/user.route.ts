@@ -5,7 +5,7 @@ const router = Router()
 
 export const USER_BASE_ROUTE = '/user'
 
-router.get('/all/images', userController.getAllUserImages)
+router.get('/all', userController.getAllUsers)
 router.get('/images/:userId', userController.getImagesByUserId)
 router.get('/videos/:userId', userController.getVideosByUserId)
 
