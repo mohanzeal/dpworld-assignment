@@ -71,6 +71,10 @@ export async function getPaginatedUsers(payload: Record<string, unknown>) {
   if (payload.searchField) queryParams += `&searchField=${payload.searchField}`;
   if (payload.searchVal) queryParams += `&searchVal=${payload.searchVal}`;
 
+  if (payload.startDate && payload.endDate) {
+    queryParams += `&startDate=${payload.startDate}&endDate=${payload.endDate}`;
+  }
+
   // send sort fields
   if (payload.sortBy) queryParams += `&sortField=${payload.sortBy}`;
 
@@ -88,6 +92,33 @@ export async function getPaginatedUsers(payload: Record<string, unknown>) {
 export async function getUserVideos(userId: string) {
   try {
     const response = await api.get(`/user/videos/${userId}`);
+    return response.data;
+  } catch (e) {
+    return showApiError(e as CatchError);
+  }
+}
+
+export async function getUserActions(userId: string) {
+  try {
+    const response = await api.get(`/user/audit/${userId}`);
+    return response.data;
+  } catch (e) {
+    return showApiError(e as CatchError);
+  }
+}
+
+export async function updateUserActions(payload: any) {
+  try {
+    const response = await api.post(`/user/audit`, payload);
+    return response.data;
+  } catch (e) {
+    return showApiError(e as CatchError);
+  }
+}
+
+export async function getUserAuditLog(userId: string) {
+  try {
+    const response = await api.get(`/user/auditlog/${userId}`);
     return response.data;
   } catch (e) {
     return showApiError(e as CatchError);

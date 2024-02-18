@@ -3,10 +3,9 @@ import { useQuasar } from "quasar";
 import { ref, watch, onMounted } from "vue";
 import { getPaginatedUsers } from "../modules/common/common.api";
 import ImageFrames from "./ImageFrames.vue";
+import { date } from "quasar";
 
 const $q = useQuasar();
-const startDateFilter = ref("2019/02/01");
-const endDateFilter = ref("2019/02/01");
 const columns = [
   {
     name: "_id",
@@ -48,6 +47,18 @@ const defaultPaginationParams = {
 };
 const pagination = ref(JSON.parse(JSON.stringify(defaultPaginationParams)));
 
+const filters = ref({
+  startDate: "",
+  endDate: "",
+});
+
+watch(
+  () => [filters.value.startDate, filters.value.endDate],
+  () => {
+    loadUsersList();
+  }
+);
+
 watch(
   () => $q.screen.name,
   () => {
@@ -74,6 +85,8 @@ async function onRequest(params: any) {
     // pagination fields
     ...params.pagination,
     rowsPerPage: params.pagination.rowsPerPage || getItemsPerPage(),
+    startDate: filters.value.startDate,
+    endDate: filters.value.endDate,
   });
 
   // set total records
@@ -93,13 +106,13 @@ async function onRequest(params: any) {
   loading.value = false;
 }
 
-const loadResumesList = () => {
+const loadUsersList = () => {
   tableRef.value.requestServerInteraction();
 };
 
 onMounted(() => {
   // get initial data from server (1st page)
-  loadResumesList();
+  loadUsersList();
 });
 
 const currentUserId = ref("");
@@ -143,21 +156,19 @@ const toggleImageDialog = (row: any) => {
         Filters:
         <div class="row items-center">
           <q-input
-            class="col-xs-4 q-mt-md q-px-sm"
+            class="col-xs-4 q-pa-sm"
             dense
             filled
-            v-model="startDateFilter"
-            mask="date"
-            :rules="['date']"
+            v-model="filters.startDate"
           >
-            <template v-slot:append>
+            <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy
                   cover
                   transition-show="scale"
                   transition-hide="scale"
                 >
-                  <q-date v-model="startDateFilter">
+                  <q-date v-model="filters.startDate" mask="YYYY-MM-DD HH:mm">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -165,27 +176,66 @@ const toggleImageDialog = (row: any) => {
                 </q-popup-proxy>
               </q-icon>
             </template>
+
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-time
+                    v-model="filters.startDate"
+                    mask="YYYY-MM-DD hh:mm"
+                    format24h
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
           </q-input>
+
           <q-input
-            class="col-xs-4 q-mt-md q-px-sm"
+            class="col-xs-4 q-pa-sm"
             dense
             filled
-            v-model="endDateFilter"
-            mask="date"
-            :rules="['date']"
+            v-model="filters.endDate"
           >
-            <template v-slot:append>
+            <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy
                   cover
                   transition-show="scale"
                   transition-hide="scale"
                 >
-                  <q-date v-model="endDateFilter">
+                  <q-date v-model="filters.endDate" mask="YYYY-MM-DD HH:mm">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-time
+                    v-model="filters.endDate"
+                    mask="YYYY-MM-DD hh:mm"
+                    format24h
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -220,7 +270,7 @@ const toggleImageDialog = (row: any) => {
           </q-td>
           <q-td :key="'createdAt'" :props="props">
             <div>
-              {{ props.row["createdAt"] }}
+              {{ date.formatDate(props.row["createdAt"], "YYYY-MM-DD hh:mm") }}
             </div>
           </q-td>
 
