@@ -2,9 +2,7 @@ import mongoose from 'mongoose'
 import env from './env.js'
 
 // Build the connection string
-const dbURI = `mongodb://${env.db.user}:${encodeURIComponent(
-  env.db.password
-)}@${env.db.host}:${env.db.port}/${env.db.name}`
+const dbURI = `mongodb://${env.db.host}:${env.db.port}/${env.db.name}`
 
 const options = {
   useNewUrlParser: true,

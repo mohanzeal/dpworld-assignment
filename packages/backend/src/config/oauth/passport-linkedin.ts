@@ -12,7 +12,7 @@ export const AuthenticationByLinkedin = new LinkedinStrategy(
     clientID: env.oauth.linkedin.LINKEDIN_CLIENT_ID,
     clientSecret: env.oauth.linkedin.LINKEDIN_CLIENT_SECRET,
     callbackURL: env.oauth.linkedin.LINKEDIN_REDIRECT_CALLBACK_URL,
-    scope: ['openid', 'profile', 'email'],
+    scope: ['profile', 'email'],
     state: false,
   } as any,
   async (accessToken: string, refreshToken: string, profile: any, cb: any) => {
@@ -24,6 +24,7 @@ export const AuthenticationByLinkedin = new LinkedinStrategy(
       userPayload[UserFields.NAME] = profile._json.given_name
       userPayload[UserFields.EMAIL] = profile._json.email
     }
+    console.log(profile)
 
     let user = await userModule.model.UserModel.findOne({
       [UserFields.EMAIL]: userPayload.email,

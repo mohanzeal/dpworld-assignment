@@ -100,7 +100,7 @@ const shareWhatsApp = (url: string) => {
       />
     </div>
   </div>
-  <div v-else class="text-center bg-white">no images found.</div>
+  <div v-else class="text-center bg-white q-pa-xl">no images found.</div>
 </template>
 <style>
 .web-cam-container {

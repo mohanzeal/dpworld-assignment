@@ -1,17 +1,23 @@
-import { IUser, UserFields } from '../../types/index.js'
+import { AuthProvider, IUser, UserFields } from '../../types/index.js'
 import mongoose, { Schema } from 'mongoose'
 
 export const UserSchema = new Schema<IUser>(
   {
     [UserFields._ID]: { type: Schema.Types.ObjectId },
     [UserFields.NAME]: { type: String, required: true, default: '' },
+    [UserFields.AUTH_PROVIDER]: {
+      type: String,
+      enum: AuthProvider,
+      required: true,
+      default: AuthProvider.SELF,
+    },
     [UserFields.EMAIL]: {
       type: String,
       unique: true,
       required: true,
       default: '',
     },
-    [UserFields.PASSWORD]: { type: String, required: true, default: '' },
+    [UserFields.PASSWORD]: { type: String, required: false, default: '' },
     [UserFields.DESC]: { type: String, required: false, default: '' },
     [UserFields.IS_DELETED]: {
       type: Boolean,

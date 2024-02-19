@@ -7,15 +7,15 @@ import {
   getUserVideos,
   updateUserActions,
 } from "../modules/common/common.api";
-import { date } from "quasar";
+import { date, debounce } from "quasar";
 
 const authStore = useAuthStore();
 
 const plyrInstance = ref<any>(null);
 const videosList = ref<{ id: string; src: string }[]>([]);
 const auditLog = ref<any>([]);
+
 const saveAudit = (action: string) => {
-  console.log("play event fired");
   updateUserActions({
     userId: authStore.user._id,
     action: action,
@@ -28,6 +28,7 @@ const saveAudit = (action: string) => {
     });
   });
 };
+
 onMounted(async () => {
   const userId = authStore.user._id;
   const response = await getUserVideos(userId);
@@ -53,8 +54,10 @@ onMounted(async () => {
       plyrInstance.value[0].player.on("exitfullscreen", () =>
         saveAudit("minimize")
       );
-      plyrInstance.value[0].player.on("volumechange", () =>
-        saveAudit("volume change")
+      plyrInstance.value[0].player.on(
+        "volumechange",
+        debounce(() => saveAudit("volume change")),
+        500
       );
     }, 500);
   }
@@ -65,7 +68,7 @@ const options = { quality: { default: "720p" } };
 </script>
 
 <template>
-  <div class="row justify-between">
+  <div class="column items-center justify-between">
     <div class="col-xs-8 web-cam-container">
       <q-carousel
         animated
@@ -97,10 +100,11 @@ const options = { quality: { default: "720p" } };
         </q-carousel-slide>
       </q-carousel>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-4 q-pa-md">
+      <div class="text-center text-caption text-bold">Audit Log</div>
       <div v-for="(audit, i) in auditLog" :key="i">
         You clicked on <b>{{ audit.action }}</b> at
-        <b>{{ date.formatDate(audit.createdAt, "YYYY-MM-DD hh:mm") }}</b>
+        {{ date.formatDate(audit.createdAt, "YYYY-MM-DD hh:mm:ss a") }}
       </div>
     </div>
   </div>
