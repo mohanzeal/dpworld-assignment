@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "src/modules/auth/auth.store";
 
 import {
@@ -28,6 +28,16 @@ const saveAudit = (action: string) => {
     });
   });
 };
+const filterAudits = computed(() => {
+  let filtered = [] as any;
+  auditLog.value.forEach((audit: any) => {
+    if (slide.value === audit.entity) {
+      filtered.push(audit);
+    }
+  });
+
+  return filtered;
+});
 
 onMounted(async () => {
   const userId = authStore.user._id;
@@ -102,8 +112,9 @@ const options = { quality: { default: "720p" } };
     </div>
     <div class="col-xs-4 q-pa-md">
       <div class="text-center text-caption text-bold">Audit Log</div>
-      <div v-for="(audit, i) in auditLog" :key="i">
-        You clicked on <b>{{ audit.action }}</b> at
+      <div v-for="(audit, i) in filterAudits" :key="i">
+        You clicked on
+        <b>{{ audit.action }}</b> at
         {{ date.formatDate(audit.createdAt, "YYYY-MM-DD hh:mm:ss a") }}
       </div>
     </div>

@@ -35,6 +35,8 @@ const redirectToProvider = (provider: any) => {
   <div
     class="row q-gutter-sm items-center justify-center social-auth-providers q-pa-sm"
   >
+    <img style="width: 200px" src="/login.svg" />
+
     <div class="col-xs-12 text-center q-ma-md text-h6">Login</div>
     <div class="col-xs-12 row q-gutter-md items-center justify-center">
       <div v-for="provider in authProviders" :key="provider.value">
